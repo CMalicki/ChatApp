@@ -41,19 +41,20 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
   >;
 
 export type User = {
-  id: string;
-  name: string;
-  imageUri: string;
+  id: String;
+  name: String;
+  imageUri: String;
 };
 
 export type Message = {
-  id: string;
+  id: String;
   content: string;
   createdAt: string;
+  user: User;
 };
 
 export type ChatRoom = {
-  id: string;
-  users: [User];
+  id: String;
+  users: User[];
   lastMessage: Message;
 };

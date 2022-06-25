@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import {
   NavigationContainer,
@@ -12,14 +12,22 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable, View, StyleSheet } from "react-native";
+import {
+  ColorSchemeName,
+  Pressable,
+  View,
+  StyleSheet,
+  Image,
+} from "react-native";
 
 import { Octicons, MaterialCommunityIcons, Fontisto } from "@expo/vector-icons";
+import { HeaderBackButton } from "@react-navigation/elements";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
+import ChatRoomScreen from "../screens/ChatRoomScreen";
 import ChatScreen from "../screens/ChatScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import {
@@ -49,7 +57,6 @@ export default function Navigation({
  * https://reactnavigation.org/docs/modal
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
 function RootNavigator() {
   return (
     <Stack.Navigator
@@ -72,7 +79,13 @@ function RootNavigator() {
           headerShown: true,
           title: "ChatApplication",
           headerRight: () => (
-            <View style={styles.navigatorMain}>
+            <View
+              style={{
+                flexDirection: "row",
+                width: 60,
+                justifyContent: "space-between",
+              }}
+            >
               <Octicons name="search" size={23} color="white" />
               <MaterialCommunityIcons
                 name="dots-vertical"
@@ -82,6 +95,48 @@ function RootNavigator() {
             </View>
           ),
         }}
+      />
+
+      <Stack.Screen
+        name="ChatRoom"
+        component={ChatRoomScreen}
+        options={({ route }) => ({
+          title: route.params.name,
+          headerBackTitle: "cos",
+          headerBackVisible: true,
+          headerLeft: () => (
+            <View>
+              <Image
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50,
+                  marginLeft: -20,
+                  marginRight: 10,
+                  flexDirection: "row",
+                }}
+                source={{ uri: route.params.imageUri }}
+              ></Image>
+            </View>
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                width: 100,
+                justifyContent: "space-between",
+              }}
+            >
+              <MaterialIcons name="call" size={22} color="white" />
+              <FontAwesome5 name="video" size={22} color="white" />
+              <MaterialCommunityIcons
+                name="dots-vertical"
+                size={22}
+                color="white"
+              />
+            </View>
+          ),
+        })}
       />
 
       <Stack.Screen
@@ -95,15 +150,6 @@ function RootNavigator() {
     </Stack.Navigator>
   );
 }
-
-// STYLES
-const styles = StyleSheet.create({
-  navigatorMain: {
-    flexDirection: "row",
-    width: 60,
-    justifyContent: "space-between",
-  },
-});
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
